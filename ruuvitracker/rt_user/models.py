@@ -12,6 +12,7 @@ class User(models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length=255)
+    owner = models.ForeignKey(User)
     members = models.ManyToManyField(User)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
