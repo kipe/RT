@@ -15,24 +15,26 @@ class Tracker(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
 
+class Event(models.Model):
+    def get_participants(self):
+        return [x for x in self.trackers.owner]
+
+    organizer = models.ForeignKey(User)
+    trackers = models.ManyToManyField(Tracker)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    description = models.TextField()
+
+
 class Session(models.Model):
     tracker = models.ForeignKey(Tracker)
-    session_code = models.CharField(max_length=255)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
     description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
-
-
-class Event(models.Model):
-    sessions = models.ManyToManyField(Session)
-    session_code = models.CharField(max_length=255)
-    description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
 
 class Location(models.Model):
-    tracker = models.ForeignKey(Tracker, empty=True)
+    tracker = models.ForeignKey(Tracker)
     session = models.ForeignKey(Session, empty=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
